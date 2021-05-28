@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="37629f26-d325-4571-ae2a-8ddf8a101b23" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="85c52e05-1cb0-4a87-9752-9a2255371ba5" basePath="/api/users" >
+		<http:request-connection host="reqres.in" />
+	</http:request-config>
+	<flow name="cicd-github-jenkins-tutorialFlow" doc:id="db3b57c2-2eb3-4502-8d36-a46764d231d7" >
+		<http:listener doc:name="/worldtime" doc:id="28bf6883-3829-4b10-9f25-6dc35188aa24" config-ref="HTTP_Listener_config" path="/user/{id}"/>
+		<http:request method="GET" doc:name="Request" doc:id="515b552d-fca2-437e-a5ea-24d2c258f344" config-ref="HTTP_Request_configuration" path="/{id}">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	id : attributes.uriParams.id
+}]]]></http:uri-params>
+		</http:request>
+	</flow>
+</mule>
